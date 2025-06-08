@@ -10,8 +10,22 @@ The firmware updater can internally read the firmware, but it doesn't offer a wa
 
 # How to use
 ## Linux
-```gcc -shared -o libAsmIoLinux.so -fPIC Linux/AsmIOLinux.c```
-Place the resulting `.so` file next to the ASMTool executable (obtained by building this project)
+Install **dotnet SDK** (eg. Gentoo: *dev-dotnet/dotnet-sdk-bin*) and ensure you have **CMake**, then follow as:
+
+```
+git clone https://github.com/smx-smx/ASMTool
+cd ASMTool
+mkdir build
+cd build
+cmake ..
+make
+gcc -shared -o AsmTool/net8.0/libAsmIoLinux.so -l:libpci.so -fPIC ../AsmTool/Linux/AsmIOLinux.c
+cd AsmTool/net8.0
+./AsmTool
+```
+
+If you are getting *libAsmIoLinux.so: undefined symbol: pci_read_byte* error then the linking to *libpci.so* was not done correctly (library is part of *sys-apps/pciutils* in Gentoo Linux, which is usually installed when one uses the *lspci* command).
+
 
 ## Windows
 You'll need `AsmIo.sys` (for 32bit Windows) or `AsmIo64.sys` (for 64bit Windows).
